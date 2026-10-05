@@ -1,0 +1,59 @@
+table DimStore
+	lineageTag: dc222767-4ae8-4402-91a0-edfa080ae441
+
+	column StoreID
+		dataType: string
+		lineageTag: 6fb00fdd-899b-4562-8580-64f7614367fd
+		summarizeBy: none
+		sourceColumn: StoreID
+
+	column City
+		dataType: string
+		lineageTag: 7976a2f1-e7eb-4a5e-8d8b-a4b8030372f2
+		dataCategory: City
+		summarizeBy: none
+		sourceColumn: City
+
+	column State
+		dataType: string
+		lineageTag: ec16221e-00a5-4a88-a65b-fc0550801bed
+		dataCategory: StateOrProvince
+		summarizeBy: none
+		sourceColumn: State
+
+	column Region
+		dataType: string
+		lineageTag: df44c566-8f5f-484b-b55a-de605fea165e
+		summarizeBy: none
+		sourceColumn: Region
+
+	column Lat
+		dataType: double
+		lineageTag: 1bb7d3a3-7e33-4752-9ab1-b6d270e868d2
+		dataCategory: Latitude
+		summarizeBy: none
+		sourceColumn: Lat
+
+	column Long
+		dataType: double
+		lineageTag: c558268d-634c-46c1-b5fa-897a103cbe61
+		dataCategory: Longitude
+		summarizeBy: none
+		sourceColumn: Long
+
+	column StoreType
+		dataType: string
+		lineageTag: e9e1388f-4b16-41e1-8139-a921bf3e00d5
+		summarizeBy: none
+		sourceColumn: StoreType
+
+	partition DimStore = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:/Swiftkart/data/DimStore.csv"),[Delimiter=",", Columns=7, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    Typed = Table.TransformColumnTypes(Headers, {{"StoreID", type text}, {"City", type text}, {"State", type text}, {"Region", type text}, {"Lat", type number}, {"Long", type number}, {"StoreType", type text}}, "en-US")
+				in
+				    Typed
+

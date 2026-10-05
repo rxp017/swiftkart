@@ -1,0 +1,11 @@
+# Local Power BI caches and editor state
+**/.pbi/
+# Presentation belongs only in the private submission package
+*.ppt
+*.pptx
+*.pptm
+*.zip
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db

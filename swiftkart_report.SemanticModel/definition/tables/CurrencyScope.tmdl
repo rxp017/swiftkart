@@ -1,0 +1,14 @@
+table CurrencyScope
+	isHidden
+	lineageTag: 511d1dc4-5e20-4e75-a544-17e0da950bcb
+
+	column Kind
+		dataType: string
+		lineageTag: e23f55ab-72ee-4e55-b807-1867ed13bf00
+		summarizeBy: none
+		sourceColumn: Kind
+
+	partition CurrencyScope = m
+		mode: import
+		source = #table(type table [Kind=text], {{"Sales"},{"Profit"},{"Avg order value"}})
+

@@ -1,0 +1,772 @@
+table _Measures
+	lineageTag: 4fb262c7-84db-4cc6-a768-bd096e948351
+
+	measure Sales = SUM(FactSales[Revenue])
+		formatString: #,0
+		displayFolder: Numbers
+		lineageTag: 3cd4d1f7-490f-462c-b080-849e11612c35
+
+	measure Cost = SUM(FactSales[Cost])
+		formatString: #,0
+		displayFolder: Numbers
+		lineageTag: 76111223-c25a-46f8-9414-34ba4c169451
+
+	measure Profit = [Sales]-[Cost]
+		formatString: #,0
+		displayFolder: Numbers
+		lineageTag: a319975d-07be-4c09-a41e-6ec9ad6ebdf2
+
+	measure Orders = COUNTROWS(FactSales)
+		formatString: #,0
+		displayFolder: Numbers
+		lineageTag: 6125be1d-c8a6-45b1-bd20-ad0cdee45def
+
+	measure Customers = DISTINCTCOUNT(FactSales[CustomerID])
+		formatString: #,0
+		displayFolder: Numbers
+		lineageTag: 7284d800-f995-421d-8424-60be748de802
+
+	measure Units = SUM(FactSales[Quantity])
+		formatString: #,0
+		displayFolder: Numbers
+		lineageTag: 876ce457-5459-4657-8bd2-3a8e7db56106
+
+	measure 'Avg order value' = DIVIDE([Sales],[Orders])
+		formatString: 0
+		displayFolder: Numbers
+		lineageTag: 15a0f967-2626-4973-9488-cb5c55760c3a
+
+	measure 'Avg delivery time' = AVERAGE(FactSales[DeliveryMinutes])
+		formatString: 0.0 "min"
+		displayFolder: Numbers
+		lineageTag: 7a907a1f-1759-4d4b-9f0d-2fb10f72a362
+
+	measure 'Orders returned' = DIVIDE(SUM(FactSales[ReturnFlag]),[Orders])
+		formatString: 0.0%
+		displayFolder: Numbers
+		lineageTag: a58a3b95-535a-4839-9c48-37d514a84806
+
+	measure Rating = AVERAGE(FactSales[Rating])
+		formatString: 0.00 " / 5"
+		displayFolder: Numbers
+		lineageTag: ddd6e922-d3a0-4438-9a26-305e203035bb
+
+	measure Margin = DIVIDE([Profit],[Sales])
+		formatString: 0.0%
+		displayFolder: Numbers
+		lineageTag: 6e7719ca-0577-4700-aa12-4187226c7378
+
+	measure 'Sales last year' = CALCULATE([Sales],DATEADD(DimDate[Date],-1,YEAR))
+		formatString: #,0
+		displayFolder: Report
+		lineageTag: bb93e062-d00d-443b-af6d-4739a69fbafc
+
+	measure 'Sales change' = VAR P=CALCULATE([Sales],DATEADD(DimDate[Date],-1,YEAR)) RETURN DIVIDE([Sales]-P,P)
+		formatString: 0.0%
+		displayFolder: Compared with last year
+		lineageTag: bb10197f-9abf-41ed-bd84-8db447262381
+
+	measure 'Sales arrow' = VAR P=CALCULATE([Sales],DATEADD(DimDate[Date],-1,YEAR)) RETURN IF(ISBLANK(P),"No earlier year",IF([Sales change]>=0,"↑ ","↓ ")&FORMAT(ABS([Sales change]),"0.0%")&" vs last year")
+		formatString: General
+		displayFolder: Compared with last year
+		lineageTag: 9023e9a3-e6ab-4940-88c4-e3d684bb269f
+
+	measure 'Sales color' = IF([Sales change]>=0,"#158C67","#D83760")
+		formatString: General
+		displayFolder: Colors
+		lineageTag: a1e0d70e-c5a4-480c-8d86-8c4bf21e39c5
+
+	measure 'Profit change' = VAR P=CALCULATE([Profit],DATEADD(DimDate[Date],-1,YEAR)) RETURN DIVIDE([Profit]-P,P)
+		formatString: 0.0%
+		displayFolder: Compared with last year
+		lineageTag: 58c94bbf-3a14-4ecd-8bf3-4792ccbba145
+
+	measure 'Profit arrow' = VAR P=CALCULATE([Profit],DATEADD(DimDate[Date],-1,YEAR)) RETURN IF(ISBLANK(P),"No earlier year",IF([Profit change]>=0,"↑ ","↓ ")&FORMAT(ABS([Profit change]),"0.0%")&" vs last year")
+		formatString: General
+		displayFolder: Compared with last year
+		lineageTag: 07ba71fd-b2fd-4af5-a2b3-ac26f9569691
+
+	measure 'Profit color' = IF([Profit change]>=0,"#158C67","#D83760")
+		formatString: General
+		displayFolder: Colors
+		lineageTag: b7bd3fc2-7ba1-4216-98e7-fe24949384e6
+
+	measure 'Orders change' = VAR P=CALCULATE([Orders],DATEADD(DimDate[Date],-1,YEAR)) RETURN DIVIDE([Orders]-P,P)
+		formatString: 0.0%
+		displayFolder: Compared with last year
+		lineageTag: 42a1ae45-2fc7-468a-817d-e18b3dc49881
+
+	measure 'Orders arrow' = VAR P=CALCULATE([Orders],DATEADD(DimDate[Date],-1,YEAR)) RETURN IF(ISBLANK(P),"No earlier year",IF([Orders change]>=0,"↑ ","↓ ")&FORMAT(ABS([Orders change]),"0.0%")&" vs last year")
+		formatString: General
+		displayFolder: Compared with last year
+		lineageTag: 55e2c190-9032-4359-a41e-e632ab5d1f7a
+
+	measure 'Orders color' = IF([Orders change]>=0,"#158C67","#D83760")
+		formatString: General
+		displayFolder: Colors
+		lineageTag: 4d28877b-e0d8-4766-b622-73323aa7e4ca
+
+	measure 'Avg delivery time change' = VAR P=CALCULATE([Avg delivery time],DATEADD(DimDate[Date],-1,YEAR)) RETURN DIVIDE([Avg delivery time]-P,P)
+		formatString: 0.0%
+		displayFolder: Compared with last year
+		lineageTag: 10af7d67-d39b-4d70-b1de-ff01bf8ecf7e
+
+	measure 'Avg delivery time arrow' = VAR P=CALCULATE([Avg delivery time],DATEADD(DimDate[Date],-1,YEAR)) RETURN IF(ISBLANK(P),"No earlier year",IF([Avg delivery time change]>=0,"↑ ","↓ ")&FORMAT(ABS([Avg delivery time change]),"0.0%")&" vs last year")
+		formatString: General
+		displayFolder: Compared with last year
+		lineageTag: 1b68c519-8fc4-4be3-93dd-c63128ed4382
+
+	measure 'Avg delivery time color' = IF([Avg delivery time change]<=0,"#158C67","#D83760")
+		formatString: General
+		displayFolder: Colors
+		lineageTag: d7140448-f73d-4639-a8a8-bd5656c08675
+
+	measure 'Avg order value change' = VAR P=CALCULATE([Avg order value],DATEADD(DimDate[Date],-1,YEAR)) RETURN DIVIDE([Avg order value]-P,P)
+		formatString: 0.0%
+		displayFolder: Compared with last year
+		lineageTag: d83b541c-7a9c-416d-b4fb-6d10ea85409b
+
+	measure 'Avg order value arrow' = VAR P=CALCULATE([Avg order value],DATEADD(DimDate[Date],-1,YEAR)) RETURN IF(ISBLANK(P),"No earlier year",IF([Avg order value change]>=0,"↑ ","↓ ")&FORMAT(ABS([Avg order value change]),"0.0%")&" vs last year")
+		formatString: General
+		displayFolder: Compared with last year
+		lineageTag: 4385113c-8f68-4476-9ea3-720038db879d
+
+	measure 'Avg order value color' = IF([Avg order value change]>=0,"#158C67","#D83760")
+		formatString: General
+		displayFolder: Colors
+		lineageTag: 4a46341e-c83a-41bc-81e8-d5c4ccfc7cf3
+
+	measure 'Year selected' = SELECTEDVALUE(DimDate[Year],2025)
+		formatString: 0
+		displayFolder: Words
+		lineageTag: 5e2257b1-0a6f-452d-948c-208c820e2f48
+
+	measure Showing = "Showing: "&[Year selected]&IF([Year selected]=2023," • no earlier year",", compared with "&([Year selected]-1))
+		formatString: General
+		displayFolder: Words
+		lineageTag: 2cd6c004-c3ec-4bda-a6a1-35f1f38e0ccc
+
+	measure 'City title' = [Chosen city]&": city deep dive"
+		formatString: General
+		displayFolder: Words
+		lineageTag: 82213d50-7de6-4f22-8a7b-44c47d20cfbb
+
+	measure 'Metric value' = SWITCH(SWITCH(SELECTEDVALUE(Metric[Order],0),1,"Profit",2,"Orders","Sales"),"Profit",[Profit],"Orders",[Orders],[Sales])
+		formatString: #,0
+		displayFolder: Report
+		lineageTag: 80fd681f-008d-4f4f-a468-e3cd211f0258
+
+	measure 'Metric name' = SWITCH(SELECTEDVALUE(Metric[Order],0),1,"Profit",2,"Orders","Sales")
+		formatString: General
+		displayFolder: Words
+		lineageTag: 515af74b-badf-4dcb-99b4-78c9a9f77129
+
+	measure 'Metric display' = VAR K=[Metric name] RETURN IF(K="Orders",FORMAT([Orders],"#,0"),CALCULATE([FormatINR],CurrencyScope[Kind]=K))
+		formatString: General
+		displayFolder: Words
+		lineageTag: 05c194fe-8554-4e52-81db-23e9369d50db
+
+	measure 'Money value' = SWITCH(SELECTEDVALUE(CurrencyScope[Kind],"Sales"),"Profit",[Profit],"Avg order value",[Avg order value],[Sales])
+		formatString: #,0
+		displayFolder: Report
+		lineageTag: 1cf5e636-601c-41e9-a2a9-86b3a7f332f2
+
+	measure FormatINR = VAR V=[Money value] VAR A=ABS(V) RETURN SWITCH(TRUE(),A>=10000000,"₹"&FORMAT(V/10000000,"0.00")&" Cr",A>=100000,"₹"&FORMAT(V/100000,"0.0")&" L",A>=1000,"₹"&FORMAT(V/1000,"0.0")&" K","₹"&FORMAT(V,"0"))
+		formatString: General
+		displayFolder: Indian currency
+		lineageTag: 45868dd8-5101-4404-a2a7-ad40c3947f7b
+
+	measure 'Sales L' = [Sales]/100000
+		formatString: ₹0.0 "L"
+		displayFolder: Indian currency
+		lineageTag: 86fbc95f-51eb-4bfc-8726-b8dd5d8d54d7
+
+	measure 'Last year L' = [Sales last year]/100000
+		formatString: ₹0.0 "L"
+		displayFolder: Indian currency
+		lineageTag: dbd83b09-f059-4fc6-8282-0d9027c54333
+
+	measure 'Profit L' = [Profit]/100000
+		formatString: ₹0.0 "L"
+		displayFolder: Indian currency
+		lineageTag: 8012a385-a715-4242-bcbe-c98d39e032ff
+
+	measure 'Category color' = SELECTEDVALUE(DimProduct[CategoryColor],"#2EE6A6")
+		formatString: General
+		displayFolder: Colors
+		lineageTag: 13e480d5-1026-42e2-8437-3964e447aa27
+
+	measure 'Delivery color' = IF([Avg delivery time]>22,"#FF4D6D","#2EE6A6")
+		formatString: General
+		displayFolder: Colors
+		lineageTag: b3ff1d46-8d05-4186-a099-922763f90067
+
+	measure 'Return color' = VAR P=[Orders returned] RETURN SWITCH(TRUE(),P>=.10,"#FF4D6D",P>=.08,"#D64164",P>=.06,"#B63659","#8F2D4C")
+		formatString: General
+		displayFolder: Colors
+		lineageTag: 0ae697d2-629e-48a2-8b21-a85fbb394fc7
+
+	measure 'Store rank' = IF(ISINSCOPE(DimStore[StoreID]),RANKX(ALL(DimStore),CALCULATE([Sales]),,DESC,DENSE))
+		formatString: 0
+		displayFolder: Store ranking
+		lineageTag: 5e29dc55-4642-4186-b645-360dd1d4180a
+
+	measure 'Show store' = VAR R=[Store rank] RETURN IF(SELECTEDVALUE(StoreView[Choice],"Top 10")="Top 10",IF(R<=10,1,0),IF(R>50,1,0))
+		formatString: 0
+		displayFolder: Store ranking
+		lineageTag: 5478d8fd-fb4b-460b-a2d2-bde71b820871
+
+	measure 'Top product sales' = VAR T=TOPN(10,ALLSELECTED(DimProduct[ProductName]),[Sales],DESC) RETURN CALCULATE([Sales L],KEEPFILTERS(T))
+		formatString: ₹0.0 "L"
+		displayFolder: Report
+		lineageTag: d82fd63e-99fd-413e-8f03-2511ecb13dfd
+
+	measure 'Top product INR' = VAR T=TOPN(10,ALLSELECTED(DimProduct[ProductName]),[Sales],DESC) RETURN IF(NOT ISINSCOPE(DimProduct[ProductName])||CONTAINS(T,DimProduct[ProductName],SELECTEDVALUE(DimProduct[ProductName])),[FormatINR])
+		formatString: General
+		displayFolder: Indian currency
+		lineageTag: f69280c6-25fb-4244-a08a-be446b0fdd97
+
+	measure 'Top city sales L' = VAR T=TOPN(5,ALLSELECTED(DimStore[City]),[Sales],DESC) RETURN CALCULATE([Sales L],KEEPFILTERS(T))
+		formatString: ₹0.0 "L"
+		displayFolder: Report
+		lineageTag: 4aab57cf-1913-41ea-8322-55a21310f248
+
+	measure Retention = VAR A=SELECTEDVALUE(CohortAge[Month],0) VAR Cutoff=DATE([Year selected],12,31) VAR Eligible=FILTER(VALUES(DimCustomer[CustomerID]),EDATE(CALCULATE(MIN(DimCustomer[CohortStart])),A)<=Cutoff) VAR D=COUNTROWS(Eligible) VAR N=CALCULATE([Customers],REMOVEFILTERS(DimDate),FactSales[MonthsAfterFirstOrder]=A,KEEPFILTERS(Eligible)) RETURN DIVIDE(N,D)
+		formatString: 0%
+		displayFolder: Customers coming back
+		lineageTag: f56f5c55-dbf9-483c-816b-e0a3b3f289b2
+
+	measure 'Home sentence' = VAR Best=TOPN(1,ALLSELECTED(DimStore[City]),[Sales],DESC) VAR Slow=TOPN(1,ALLSELECTED(DimStore[City]),[Avg delivery time],DESC) RETURN IF(ISBLANK([Sales change]),"Sales: "&[FormatINR]&".","Sales "&IF([Sales change]>=0,"grew ","fell ")&FORMAT(ABS([Sales change]),"0.0%")&" vs last year.")&" Best city: "&CONCATENATEX(Best,DimStore[City])&". Slowest delivery: "&CONCATENATEX(Slow,DimStore[City])&"."
+		formatString: General
+		displayFolder: Words
+		lineageTag: b1bc93b9-6b10-4f46-96d2-f8f89237a565
+
+	measure 'VIP sentence' = VAR VC=CALCULATE([Customers],DimCustomer[Segment]="VIP") VAR VS=CALCULATE([Sales],DimCustomer[Segment]="VIP") RETURN "VIPs: "&FORMAT(DIVIDE(VC,[Customers]),"0%")&" of buyers, "&FORMAT(DIVIDE(VS,[Sales]),"0%")&" of sales"
+		formatString: General
+		displayFolder: Words
+		lineageTag: 6d1cfa5e-a63c-47d0-b543-98152b1c80dc
+
+	measure 'Sales note' = FORMAT([Orders],"#,0")&" orders • sales before returns"
+		formatString: General
+		displayFolder: Words
+		lineageTag: 1f458508-1bb8-4946-ab45-ad1e5784d865
+
+	measure 'Profit note' = "Money left after product costs"
+		formatString: General
+		displayFolder: Words
+		lineageTag: d4b06d5e-18a6-4d0a-ae7e-1919b14a7b0d
+
+	measure 'Orders note' = FORMAT([Customers],"#,0")&" people placed these orders"
+		formatString: General
+		displayFolder: Words
+		lineageTag: 433a3983-61e9-4a1d-ad6b-d19c10cc37b1
+
+	measure 'Delivery note' = FORMAT([Avg delivery time],"0.0")&" min • goal: 22 min or less"
+		formatString: General
+		displayFolder: Words
+		lineageTag: 130111e0-73b8-4714-8d3c-ae88cfe16e63
+
+	measure 'Returns note' = FORMAT([Orders returned],"0.0%")&" of orders were returned"
+		formatString: General
+		displayFolder: Words
+		lineageTag: b75d7e1c-9012-4aa3-94a8-663e7477169e
+
+	measure 'Monthly note' = "This year: teal • last year: grey • "&IF([Metric name]="Orders","thousand orders","₹ lakh")
+		formatString: General
+		displayFolder: Words
+		lineageTag: 54675670-0d0c-4dbb-a955-72df88075384
+
+	measure 'Category note' = "All eight categories • "&IF([Metric name]="Orders","thousand orders","₹ lakh")
+		formatString: General
+		displayFolder: Words
+		lineageTag: d5875f66-ec13-4852-bc5f-067ca8d9fea9
+
+	measure 'Cities note' = "The five cities with the most "&LOWER([Metric name])
+		formatString: General
+		displayFolder: Words
+		lineageTag: 3e196781-4f5a-4f61-801a-ef2acf614db7
+
+	measure 'Retention note' = "First order = 100%. Later months show who came back."
+		formatString: General
+		displayFolder: Words
+		lineageTag: 2826ac87-0f40-4d31-a296-9297f8c3b0b1
+
+	measure 'Heat note' = "Each cell shows sales in ₹ lakh. Brighter = more."
+		formatString: General
+		displayFolder: Words
+		lineageTag: 8cacd263-c15e-483f-8b71-8c9f2043190b
+
+	measure 'Profit share note' = "Share of profit by category • total "&CALCULATE([FormatINR],CurrencyScope[Kind]="Profit")
+		formatString: General
+		displayFolder: Words
+		lineageTag: 8f41a076-4c65-4c4a-8a51-11d16fa66b12
+
+	measure 'Product note' = "The 10 products with the most sales"
+		formatString: General
+		displayFolder: Words
+		lineageTag: e90ef198-05bc-4185-8e6e-daa9cc36073f
+
+	measure 'Payment note' = FORMAT(DIVIDE(CALCULATE([Orders],FactSales[PaymentMode]="UPI"),[Orders]),"0%")&" of orders paid with UPI"
+		formatString: General
+		displayFolder: Words
+		lineageTag: 1a776175-1f7a-4cef-976d-11e803b55b3e
+
+	measure 'Rating note' = "Average "&FORMAT([Rating],"0.00")&" out of 5 stars"
+		formatString: General
+		displayFolder: Words
+		lineageTag: 8dd70604-a11a-4e75-9c24-2abe661d75e0
+
+	measure 'Store note' = SELECTEDVALUE(StoreView[Choice],"Top 10")&" of 60 stores • ranked by sales"
+		formatString: General
+		displayFolder: Words
+		lineageTag: 70c963c9-3a99-4c93-86f0-1087d3390022
+
+	measure 'City stores note' = FORMAT(CALCULATE(DISTINCTCOUNT(DimStore[StoreID]),TREATAS({[Chosen city]},DimStore[City])),"0")&" stores in "&[Chosen city]
+		formatString: General
+		displayFolder: Words
+		lineageTag: ac083c4c-0b65-4de2-b17c-2ead8225abf2
+
+	measure 'Tooltip sales' = FORMAT([Year selected],"0")&" • before returns"
+		formatString: General
+		displayFolder: Words
+		lineageTag: ad02cdc7-35b1-4489-9829-c531a4082c26
+
+	measure 'Tooltip profit' = "After product costs"
+		formatString: General
+		displayFolder: Words
+		lineageTag: 31dc4ee4-1b25-4b32-aec1-d0ea0c792fe7
+
+	measure 'Tooltip delivery' = FORMAT([Orders returned],"0.0%")&" orders returned"
+		formatString: General
+		displayFolder: Words
+		lineageTag: 80bd5f07-568b-4203-b509-b75fb3f9182f
+
+	measure Footer = "Sample data, India, 2023-2025"
+		formatString: General
+		displayFolder: Words
+		lineageTag: ec506e1c-5b82-43fb-a473-41c0b99ef22e
+
+	measure Glossary =
+			"Sales: order value after discounts, before returns.
+			Profit: sales minus product costs, before shop expenses.
+			Orders: how many purchases people made.
+			Avg delivery: usual wait from order to doorstep.
+			Orders returned: share sent back by customers.
+			Came back: people who ordered again later."
+		formatString: General
+		displayFolder: Words
+		lineageTag: 710fbbe1-b252-48a9-b217-019401fb33e4
+
+	measure 'Text 70' = "SWIFTKART"
+		formatString: General
+		displayFolder: Labels
+		lineageTag: 38913898-01ae-42d9-82c7-1718453bea1f
+
+	measure 'Text 71' = "How is Swiftkart doing?"
+		formatString: General
+		displayFolder: Labels
+		lineageTag: 154a75a6-5fd4-481a-ad74-c64c43325098
+
+	measure 'Text 72' = "Plain words"
+		formatString: General
+		displayFolder: Labels
+		lineageTag: 1bd224d5-8688-4439-9e69-f052bc2ac188
+
+	measure 'Text 73' = "Sales: order value after discounts, before returns."
+		formatString: General
+		displayFolder: Labels
+		lineageTag: 04bed279-73bb-4c79-8109-8e6e021a3c77
+
+	measure 'Text 74' = "Profit: sales minus product costs, before shop expenses."
+		formatString: General
+		displayFolder: Labels
+		lineageTag: a45cff0b-7ad8-4362-94a5-6c73e139ce38
+
+	measure 'Text 75' = "Orders: how many purchases people made."
+		formatString: General
+		displayFolder: Labels
+		lineageTag: 34742cb7-97f2-4cfb-bf4f-f82fba9ebaae
+
+	measure 'Text 76' = "Avg delivery: usual wait from order to doorstep."
+		formatString: General
+		displayFolder: Labels
+		lineageTag: f492b72b-37c0-4193-9c81-34875e6d66e9
+
+	measure 'Text 77' = "Orders returned: share sent back by customers."
+		formatString: General
+		displayFolder: Labels
+		lineageTag: 01400aaa-870a-4a7f-9d65-768a90283c68
+
+	measure 'Text 78' = "Came back: people who ordered again later."
+		formatString: General
+		displayFolder: Labels
+		lineageTag: 8f5c18b2-f4d2-46aa-86cf-2ffc5baa13aa
+
+	measure 'Text 79' = "SWIFTKART"
+		formatString: General
+		displayFolder: Labels
+		lineageTag: 8d537f53-ac8b-416c-91d3-14208e68febb
+
+	measure 'Text 80' = "Who buys, and what sells?"
+		formatString: General
+		displayFolder: Labels
+		lineageTag: 91066332-4580-4cbc-bdfc-49a58b6bfbf4
+
+	measure 'Text 81' = "Plain words"
+		formatString: General
+		displayFolder: Labels
+		lineageTag: 6ac3bf8a-527f-494c-96b7-4ebe889b8455
+
+	measure 'Text 82' = "Sales: order value after discounts, before returns."
+		formatString: General
+		displayFolder: Labels
+		lineageTag: 94c44124-8e80-49fd-b7e7-b6f26ca3bd05
+
+	measure 'Text 83' = "Profit: sales minus product costs, before shop expenses."
+		formatString: General
+		displayFolder: Labels
+		lineageTag: 8259d8cd-d33d-43f2-9030-6ef08b9d9f93
+
+	measure 'Text 84' = "Orders: how many purchases people made."
+		formatString: General
+		displayFolder: Labels
+		lineageTag: a91783e6-7765-4d74-9101-c5fb403b8546
+
+	measure 'Text 85' = "Avg delivery: usual wait from order to doorstep."
+		formatString: General
+		displayFolder: Labels
+		lineageTag: a1900dba-9512-47d7-bd2b-24a18408764d
+
+	measure 'Text 86' = "Orders returned: share sent back by customers."
+		formatString: General
+		displayFolder: Labels
+		lineageTag: 078a64b3-7972-462c-8e03-6163087a3a42
+
+	measure 'Text 87' = "Came back: people who ordered again later."
+		formatString: General
+		displayFolder: Labels
+		lineageTag: 95b66aa4-ea96-4d9e-807a-dc7aaa24038b
+
+	measure 'Text 88' = "SWIFTKART"
+		formatString: General
+		displayFolder: Labels
+		lineageTag: c49a3464-29d3-475a-9144-31dea36f390b
+
+	measure 'Text 89' = "Are we fast and reliable?"
+		formatString: General
+		displayFolder: Labels
+		lineageTag: 5c2a1b23-20fa-4566-9e34-6026750e4329
+
+	measure 'Text 90' = "Plain words"
+		formatString: General
+		displayFolder: Labels
+		lineageTag: dc6181c8-f7b6-4f65-9032-6837a8208ac8
+
+	measure 'Text 91' = "Sales: order value after discounts, before returns."
+		formatString: General
+		displayFolder: Labels
+		lineageTag: f8bdfbca-b9fe-498f-bb24-b88d5bf39e17
+
+	measure 'Text 92' = "Profit: sales minus product costs, before shop expenses."
+		formatString: General
+		displayFolder: Labels
+		lineageTag: e631e19b-30c2-4947-96ec-96a2b6384620
+
+	measure 'Text 93' = "Orders: how many purchases people made."
+		formatString: General
+		displayFolder: Labels
+		lineageTag: d29f0422-cb77-4933-868b-cb0dc64a05a9
+
+	measure 'Text 94' = "Avg delivery: usual wait from order to doorstep."
+		formatString: General
+		displayFolder: Labels
+		lineageTag: 29c44a84-016b-404f-9d29-501ff498a225
+
+	measure 'Text 95' = "Orders returned: share sent back by customers."
+		formatString: General
+		displayFolder: Labels
+		lineageTag: 704591ab-dcb1-44fd-9d59-00c1fc071aad
+
+	measure 'Text 96' = "Came back: people who ordered again later."
+		formatString: General
+		displayFolder: Labels
+		lineageTag: 02990ffb-158a-4d8c-b69f-dc57f23cfc69
+
+	measure 'Text 97' = "SWIFTKART"
+		formatString: General
+		displayFolder: Labels
+		lineageTag: 81556e43-5bb8-4ba4-9a63-01b33748dfeb
+
+	measure 'Text 98' = "City deep dive"
+		formatString: General
+		displayFolder: Labels
+		lineageTag: 818fff45-a8b3-42b1-ad0e-c57068cb190b
+
+	measure 'Text 99' = "Plain words"
+		formatString: General
+		displayFolder: Labels
+		lineageTag: de6d40ec-95d3-4d26-93a2-86bfd1e91d30
+
+	measure 'Text 100' = "Sales: order value after discounts, before returns."
+		formatString: General
+		displayFolder: Labels
+		lineageTag: 78202ce6-0fc0-43d4-a023-449d580fdbee
+
+	measure 'Text 101' = "Profit: sales minus product costs, before shop expenses."
+		formatString: General
+		displayFolder: Labels
+		lineageTag: a5b5c58d-243b-4105-b963-ae131b90c283
+
+	measure 'Text 102' = "Orders: how many purchases people made."
+		formatString: General
+		displayFolder: Labels
+		lineageTag: bd881439-6a30-4245-bddf-b8462fab6c09
+
+	measure 'Text 103' = "Avg delivery: usual wait from order to doorstep."
+		formatString: General
+		displayFolder: Labels
+		lineageTag: 33c38c56-364c-48af-9e6f-7f1ffe9f4038
+
+	measure 'Text 104' = "Orders returned: share sent back by customers."
+		formatString: General
+		displayFolder: Labels
+		lineageTag: d97dc8f8-1ae9-48dd-be2b-e45677d39d3b
+
+	measure 'Text 105' = "Came back: people who ordered again later."
+		formatString: General
+		displayFolder: Labels
+		lineageTag: a7399b24-a7ac-4106-9122-8f99de6275b2
+
+	measure 'Profit share' = DIVIDE([Profit],CALCULATE([Profit],REMOVEFILTERS(DimProduct[Category])))
+		formatString: 0%
+		displayFolder: Plain language
+		lineageTag: 00e41489-2c9e-4ff5-91e9-f8ce91d36062
+
+	measure 'Payment share' = DIVIDE([Orders],CALCULATE([Orders],REMOVEFILTERS(FactSales[PaymentMode])))
+		formatString: 0%
+		displayFolder: Plain language
+		lineageTag: 09d11c4a-cb38-49ee-87dd-851e831881bf
+
+	measure 'Payment color' = SWITCH(SELECTEDVALUE(FactSales[PaymentMode]),"UPI","#38BDF8","Card","#818CF8","COD","#FACC15","Wallet","#D4A373","#38BDF8")
+		formatString: General
+		displayFolder: Plain language
+		lineageTag: dfcd291e-ab46-4676-8f65-4acf2adc6889
+
+	measure 'Segment color' = SWITCH(SELECTEDVALUE(DimCustomer[Segment]),"New","#38BDF8","Regular","#FACC15","VIP","#818CF8","#38BDF8")
+		formatString: General
+		displayFolder: Plain language
+		lineageTag: 0689b792-1305-4ee6-bcbe-f0ad294fe67b
+
+	measure 'Chosen city' = VAR DrillCity=CALCULATE(SELECTEDVALUE(DimStore[City]),ALLSELECTED(DimStore)) RETURN COALESCE(DrillCity,SELECTEDVALUE(CityChoice[City],"Mumbai"))
+		formatString: General
+		displayFolder: Plain language
+		lineageTag: 1917f301-415d-41e2-83cc-f5db051f4e19
+
+	measure 'City Sales' = CALCULATE([Sales],TREATAS({[Chosen city]},DimStore[City]))
+		formatString: General
+		displayFolder: Plain language
+		lineageTag: 8e11926a-6d0b-4cf0-b42b-c425a20379f4
+
+	measure 'City Profit' = CALCULATE([Profit],TREATAS({[Chosen city]},DimStore[City]))
+		formatString: General
+		displayFolder: Plain language
+		lineageTag: 699c069b-fed5-42fe-8cea-9cee931aae6f
+
+	measure 'City Orders' = CALCULATE([Orders],TREATAS({[Chosen city]},DimStore[City]))
+		formatString: #,0
+		displayFolder: Plain language
+		lineageTag: f073176f-8c4c-4660-afdc-fffc41802bfc
+
+	measure 'City Sales L' = CALCULATE([Sales L],TREATAS({[Chosen city]},DimStore[City]))
+		formatString: ₹0.0 "L"
+		displayFolder: Plain language
+		lineageTag: e1717322-1c9c-488a-b45e-af88a1c70d6c
+
+	measure 'City Last year L' = CALCULATE([Last year L],TREATAS({[Chosen city]},DimStore[City]))
+		formatString: ₹0.0 "L"
+		displayFolder: Plain language
+		lineageTag: da999152-a65d-4487-a27a-defe07a8542e
+
+	measure 'City Avg delivery time' = CALCULATE([Avg delivery time],TREATAS({[Chosen city]},DimStore[City]))
+		formatString: 0.0 "min"
+		displayFolder: Plain language
+		lineageTag: bf4e570b-a579-4298-9a35-fe7f00d64d30
+
+	measure 'City Orders returned' = CALCULATE([Orders returned],TREATAS({[Chosen city]},DimStore[City]))
+		formatString: 0.0%
+		displayFolder: Plain language
+		lineageTag: 0da8c08b-16a9-45d8-9851-1544162ae554
+
+	measure 'City Rating' = CALCULATE([Rating],TREATAS({[Chosen city]},DimStore[City]))
+		formatString: 0.00 " / 5"
+		displayFolder: Plain language
+		lineageTag: 5e1156a9-cbe5-4a77-bee7-929063edbb0b
+
+	measure 'City FormatINR' = CALCULATE([FormatINR],TREATAS({[Chosen city]},DimStore[City]))
+		formatString: General
+		displayFolder: Plain language
+		lineageTag: 1d1fe38b-4d72-413e-9e0b-c3f57ba61798
+
+	measure 'City Customers' = CALCULATE([Customers],TREATAS({[Chosen city]},DimStore[City]))
+		formatString: #,0
+		displayFolder: Plain language
+		lineageTag: b67ced2e-3362-4bd2-9bd5-c8f00c503670
+
+	measure 'City sales note' = FORMAT([City Orders],"#,0")&" orders • before returns"
+		formatString: General
+		displayFolder: Plain language
+		lineageTag: 05d09c67-0473-41dc-815e-bbc694cb6cd3
+
+	measure 'City orders note' = FORMAT([City Customers],"#,0")&" people ordered"
+		formatString: General
+		displayFolder: Plain language
+		lineageTag: 0f9b77f5-78a9-42fe-80ff-765f54ec1b73
+
+	measure 'City delivery note' = FORMAT([City Avg delivery time],"0.0")&" min • goal: 22 or less"
+		formatString: General
+		displayFolder: Plain language
+		lineageTag: d703ee68-00b1-4665-8c9f-b63fe547805c
+
+	measure 'Store in city' = IF(SELECTEDVALUE(DimStore[City])=[Chosen city],1,0)
+		formatString: 0
+		displayFolder: Plain language
+		lineageTag: fef69743-f2a0-468b-9c27-f2da6889aec3
+
+	measure 'Tooltip money' = IF(ISFILTERED(CityChoice[City]),[City FormatINR],[FormatINR])
+		formatString: General
+		displayFolder: Plain language
+		lineageTag: e5dd487e-76bd-4b38-977a-b137ce55341f
+
+	measure 'Tooltip minutes' = IF(ISFILTERED(CityChoice[City]),[City Avg delivery time],[Avg delivery time])
+		formatString: 0.0 "min"
+		displayFolder: Plain language
+		lineageTag: 2f995703-caa6-4379-b43b-56eb42895fd5
+
+	measure 'City returned note' = "About "&FORMAT([City Orders returned]*100,"0")&" of every 100 orders"
+		formatString: General
+		displayFolder: Report
+		lineageTag: 91d4fe98-6ccb-42b0-abcb-9b37135bd597
+
+	measure 'City sentence' = VAR C=CALCULATE(SELECTEDVALUE(DimStore[City]),ALLSELECTED(DimStore)) RETURN IF(NOT ISBLANK(C),C&" opened from a chart. Clear City in Filters to browse another city.","Sales and delivery for "&[Chosen city]&". Choose another city on the right.")
+		formatString: General
+		displayFolder: Report
+		lineageTag: 93f6dd84-8100-4e29-869e-0c2b83061693
+
+	measure 'Chart value' = DIVIDE([Metric value],IF([Metric name]="Orders",1000,100000))
+		displayFolder: Report
+		lineageTag: 9a6dd266-678b-46fe-b2c8-7eedd00439c5
+
+		formatStringDefinition = IF([Metric name]="Orders", "0.0 ""K""", "₹0.0 ""L""")
+
+	measure 'Chart prior' = CALCULATE([Chart value],DATEADD(DimDate[Date],-1,YEAR))
+		displayFolder: Report
+		lineageTag: b111ae61-36c1-4535-9230-b92b86bb9d8e
+
+		formatStringDefinition = IF([Metric name]="Orders", "0.0 ""K""", "₹0.0 ""L""")
+
+	measure 'Chart top city' = VAR R=RANKX(ALLSELECTED(DimStore[City]),[Metric value],,DESC,DENSE) RETURN IF(R<=5,[Chart value])
+		displayFolder: Report
+		lineageTag: bba66bcf-746e-478c-9d88-344c8bdf87e6
+
+		formatStringDefinition = IF([Metric name]="Orders", "0.0 ""K""", "₹0.0 ""L""")
+
+	measure 'Monthly title' = [Metric name]&" by month"
+		formatString: General
+		displayFolder: Report
+		lineageTag: 27feb119-021d-4fa9-9739-15ff55ce5083
+
+	measure 'Category title' = [Metric name]&" by category"
+		formatString: General
+		displayFolder: Report
+		lineageTag: 09cecc45-ccbd-44da-b4e4-6ad5d8fec0e5
+
+	measure 'City chart title' = "Top 5 cities by "&LOWER([Metric name])
+		formatString: General
+		displayFolder: Report
+		lineageTag: cbe9c420-3cd8-4008-8f51-9da63aadece2
+
+	measure 'Payment UPI' = DIVIDE(CALCULATE([Orders],FactSales[PaymentMode]="UPI"),CALCULATE([Orders],REMOVEFILTERS(FactSales[PaymentMode])))
+		formatString: 0%
+		displayFolder: Report
+		lineageTag: c2ff7e41-5d69-464c-a2fc-ebc755e8142b
+
+	measure 'Payment Card' = DIVIDE(CALCULATE([Orders],FactSales[PaymentMode]="Card"),CALCULATE([Orders],REMOVEFILTERS(FactSales[PaymentMode])))
+		formatString: 0%
+		displayFolder: Report
+		lineageTag: c02d5b4a-a928-453d-bf4f-d147e5f0f4e4
+
+	measure 'Payment COD' = DIVIDE(CALCULATE([Orders],FactSales[PaymentMode]="COD"),CALCULATE([Orders],REMOVEFILTERS(FactSales[PaymentMode])))
+		formatString: 0%
+		displayFolder: Report
+		lineageTag: 5d8e7f0a-9fbc-4ec7-aac1-d0340996f750
+
+	measure 'Payment Wallet' = DIVIDE(CALCULATE([Orders],FactSales[PaymentMode]="Wallet"),CALCULATE([Orders],REMOVEFILTERS(FactSales[PaymentMode])))
+		formatString: 0%
+		displayFolder: Report
+		lineageTag: ffb11d8e-4da8-451d-bff2-f6143a1ea3fe
+
+	measure 'Share Fresh Produce' = DIVIDE(CALCULATE([Profit],DimProduct[Category]="Fresh Produce"),CALCULATE([Profit],REMOVEFILTERS(DimProduct[Category])))
+		formatString: 0%
+		displayFolder: Report
+		lineageTag: c7d1c1a4-fd26-4656-94b5-c9059b3ba71e
+
+	measure 'Share Dairy & Eggs' = DIVIDE(CALCULATE([Profit],DimProduct[Category]="Dairy & Eggs"),CALCULATE([Profit],REMOVEFILTERS(DimProduct[Category])))
+		formatString: 0%
+		displayFolder: Report
+		lineageTag: 61ac0115-0453-4895-867d-bcaf4f802496
+
+	measure 'Share Snacks' = DIVIDE(CALCULATE([Profit],DimProduct[Category]="Snacks"),CALCULATE([Profit],REMOVEFILTERS(DimProduct[Category])))
+		formatString: 0%
+		displayFolder: Report
+		lineageTag: 839dad03-6e10-465d-8edd-4b1d0369d304
+
+	measure 'Share Beverages' = DIVIDE(CALCULATE([Profit],DimProduct[Category]="Beverages"),CALCULATE([Profit],REMOVEFILTERS(DimProduct[Category])))
+		formatString: 0%
+		displayFolder: Report
+		lineageTag: 20a30f01-c919-44b0-8b4b-a5d8d5e139c0
+
+	measure 'Share Staples' = DIVIDE(CALCULATE([Profit],DimProduct[Category]="Staples"),CALCULATE([Profit],REMOVEFILTERS(DimProduct[Category])))
+		formatString: 0%
+		displayFolder: Report
+		lineageTag: 759b1ce6-e760-4f07-a71c-e8c73ae54c2a
+
+	measure 'Share Frozen Foods' = DIVIDE(CALCULATE([Profit],DimProduct[Category]="Frozen Foods"),CALCULATE([Profit],REMOVEFILTERS(DimProduct[Category])))
+		formatString: 0%
+		displayFolder: Report
+		lineageTag: 1f38a895-5d33-4b5b-a53a-4fabb0c8f65c
+
+	measure 'Share Home Care' = DIVIDE(CALCULATE([Profit],DimProduct[Category]="Home Care"),CALCULATE([Profit],REMOVEFILTERS(DimProduct[Category])))
+		formatString: 0%
+		displayFolder: Report
+		lineageTag: a285307e-49c1-491d-a47e-1a4258a97933
+
+	measure 'Share Personal Care' = DIVIDE(CALCULATE([Profit],DimProduct[Category]="Personal Care"),CALCULATE([Profit],REMOVEFILTERS(DimProduct[Category])))
+		formatString: 0%
+		displayFolder: Report
+		lineageTag: 69488b5f-e9c0-43fe-85c1-0384d50aaa9b
+
+	measure Latitude = AVERAGE(DimStore[Lat])
+		formatString: 0.00
+		displayFolder: Local geography
+		lineageTag: d9ce8e45-1e60-4508-a876-3fc28c78749c
+
+	measure Longitude = AVERAGE(DimStore[Long])
+		formatString: 0.00
+		displayFolder: Local geography
+		lineageTag: ec18aee2-5dd9-47fa-a72b-89d72b6e5397
+
+	measure 'Locations question' = "Where are Swiftkart’s cities?"
+		displayFolder: Words
+		lineageTag: 1795eef0-4917-44a0-8c13-6bdf9fdeaa10
+
+	column Value
+		dataType: int64
+		isHidden
+		lineageTag: bd477deb-fabb-47cf-a057-c1bdba10b1fe
+		summarizeBy: none
+		sourceColumn: Value
+
+	partition _Measures = m
+		mode: import
+		source = #table(type table [Value=Int64.Type], {{0}})
+

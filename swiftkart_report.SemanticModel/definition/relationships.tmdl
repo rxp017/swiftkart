@@ -1,0 +1,26 @@
+relationship 35a8a8a7-39e0-50ed-82ff-0d87f5d7ac67
+	fromColumn: FactSales.CustomerID
+	toColumn: DimCustomer.CustomerID
+
+relationship e6c634da-6260-58d4-ba02-1cc8ef831602
+	fromColumn: FactSales.ProductID
+	toColumn: DimProduct.ProductID
+
+relationship 3c870ef0-10a0-510f-9da6-3ad0040bd279
+	fromColumn: FactSales.StoreID
+	toColumn: DimStore.StoreID
+
+relationship bf95fe26-9d46-5867-8eee-6f0c62b09d18
+	fromColumn: FactSales.OrderDate
+	toColumn: DimDate.Date
+
+relationship 07381878-8ed6-4741-bed1-a5e8201419ad
+	joinOnDateBehavior: datePartOnly
+	fromColumn: DimCustomer.SignupDate
+	toColumn: LocalDateTable_f5960991-54c9-4379-bc6d-f931d40b9818.Date
+
+relationship e27136c9-fdb5-4bae-89a2-ef79bce8d361
+	joinOnDateBehavior: datePartOnly
+	fromColumn: DimCustomer.CohortStart
+	toColumn: LocalDateTable_7b0d2021-c413-49ff-8a71-aa8f81654609.Date
+

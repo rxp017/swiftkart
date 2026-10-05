@@ -1,0 +1,13 @@
+table CityChoice
+	lineageTag: 00820fd9-e09a-41dc-abb5-cd629627d5f9
+
+	column City
+		dataType: string
+		lineageTag: 9c0eeadf-f414-46c1-b1ec-49cf02e63873
+		summarizeBy: none
+		sourceColumn: City
+
+	partition CityChoice = m
+		mode: import
+		source = #table(type table [City=text], {{"Bengaluru"},{"Mumbai"},{"Delhi"},{"Hyderabad"},{"Chennai"},{"Pune"},{"Kolkata"},{"Ahmedabad"},{"Jaipur"},{"Lucknow"}})
+

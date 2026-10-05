@@ -1,0 +1,34 @@
+model Model
+	culture: en-IN
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	discourageImplicitMeasures
+	sourceQueryCulture: en-IN
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_TimeIntelligenceEnabled = 0
+
+annotation PBI_QueryOrder = ["FactSales","DimCustomer","DimProduct","DimStore","DimDate","_Measures","CohortAge","Metric","CurrencyScope","StoreView","CityChoice"]
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_ProTooling = ["DevMode","DaxQueryView_Desktop"]
+
+ref table FactSales
+ref table DimCustomer
+ref table DimProduct
+ref table DimStore
+ref table DimDate
+ref table _Measures
+ref table CohortAge
+ref table Metric
+ref table CurrencyScope
+ref table StoreView
+ref table DateTableTemplate_3b5b94df-8dbc-4ba1-bcd1-57ade50e7ca9
+ref table LocalDateTable_f5960991-54c9-4379-bc6d-f931d40b9818
+ref table LocalDateTable_7b0d2021-c413-49ff-8a71-aa8f81654609
+ref table CityChoice
+
+ref cultureInfo en-IN
+

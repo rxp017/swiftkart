@@ -1,0 +1,20 @@
+table CohortAge
+	lineageTag: bf625492-e993-47c8-b3e6-dc54987c3c0b
+
+	column Month
+		dataType: int64
+		lineageTag: 8109f854-e633-4f15-8771-6f33857109c4
+		summarizeBy: none
+		sourceColumn: Month
+
+	column Label
+		dataType: string
+		lineageTag: bb964737-1cee-4fc6-8aa5-6d233390bb54
+		summarizeBy: none
+		sourceColumn: Label
+		sortByColumn: Month
+
+	partition CohortAge = m
+		mode: import
+		source = #table(type table [Month=Int64.Type,Label=text], {{0,"M0"},{1,"M1"},{2,"M2"},{3,"M3"},{4,"M4"},{5,"M5"},{6,"M6"},{7,"M7"},{8,"M8"},{9,"M9"},{10,"M10"},{11,"M11"},{12,"M12"}})
+

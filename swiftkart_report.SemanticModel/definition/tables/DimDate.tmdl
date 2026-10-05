@@ -1,0 +1,88 @@
+table DimDate
+	lineageTag: 43a4c38e-96bf-45ac-8418-dfc695320f19
+	dataCategory: Time
+
+	column Date
+		dataType: dateTime
+		isKey
+		formatString: dd MMM yyyy
+		lineageTag: 806bfbc9-dad2-4f5b-b8d6-b29541a6b7dd
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Year
+		dataType: int64
+		lineageTag: fa4f77a1-12b2-4094-8982-0da9cfb3a91f
+		summarizeBy: none
+		sourceColumn: Year
+
+	column Quarter
+		dataType: string
+		lineageTag: b2c40fe9-5a7b-455e-8295-3bc5675733de
+		summarizeBy: none
+		sourceColumn: Quarter
+
+	column Month
+		dataType: string
+		lineageTag: 3e7975ca-b2ae-4dd0-8875-37034d5cdd67
+		summarizeBy: none
+		sourceColumn: Month
+		sortByColumn: MonthNum
+
+	column MonthNum
+		dataType: int64
+		lineageTag: 58a1cdc9-d25f-4686-95d6-2f16fa4a3838
+		summarizeBy: none
+		sourceColumn: MonthNum
+
+	column Week
+		dataType: int64
+		lineageTag: 16788bc4-fc3a-445c-94e9-a529a9567f28
+		summarizeBy: none
+		sourceColumn: Week
+
+	column Weekday
+		dataType: string
+		lineageTag: e39b1e81-a9c4-422e-977b-8742c1fe4f34
+		summarizeBy: none
+		sourceColumn: Weekday
+
+	column IsWeekend
+		dataType: boolean
+		lineageTag: a08b6b2e-98d3-4c45-b0d0-440f3089fbb8
+		summarizeBy: none
+		sourceColumn: IsWeekend
+
+	column IsFestival
+		dataType: boolean
+		lineageTag: 5e6e07a8-a851-4a1f-87d1-d63a12d5fcbb
+		summarizeBy: none
+		sourceColumn: IsFestival
+
+	column YearMonth
+		dataType: string
+		lineageTag: 544c7552-ad2b-4b68-84fa-2fe8d45f0403
+		summarizeBy: none
+		sourceColumn: YearMonth
+
+	column MonthStart
+		dataType: dateTime
+		formatString: dd MMM yyyy
+		lineageTag: 293da634-ea46-462b-96d7-220d7896c511
+		summarizeBy: none
+		sourceColumn: MonthStart
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition DimDate = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:/Swiftkart/data/DimDate.csv"),[Delimiter=",", Columns=11, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    Typed = Table.TransformColumnTypes(Headers, {{"Date", type date}, {"Year", Int64.Type}, {"Quarter", type text}, {"Month", type text}, {"MonthNum", Int64.Type}, {"Week", Int64.Type}, {"Weekday", type text}, {"IsWeekend", type logical}, {"IsFestival", type logical}, {"YearMonth", type text}, {"MonthStart", type date}}, "en-US")
+				in
+				    Typed
+

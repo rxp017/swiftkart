@@ -1,0 +1,109 @@
+{
+  "name": "Swiftkart Daylight",
+  "dataColors": [
+    "#34D399",
+    "#FACC15",
+    "#FB923C",
+    "#38BDF8",
+    "#D4A373",
+    "#818CF8",
+    "#F472B6",
+    "#C084FC"
+  ],
+  "background": "#F6F4EF",
+  "foreground": "#182B35",
+  "tableAccent": "#2EE6A6",
+  "good": "#158C67",
+  "bad": "#D83760",
+  "neutral": "#667681",
+  "textClasses": {
+    "label": {
+      "fontFace": "Segoe UI",
+      "color": "#182B35",
+      "fontSize": 10
+    },
+    "title": {
+      "fontFace": "Segoe UI",
+      "color": "#182B35",
+      "fontSize": 12
+    },
+    "callout": {
+      "fontFace": "Segoe UI",
+      "color": "#182B35",
+      "fontSize": 30
+    },
+    "header": {
+      "fontFace": "Segoe UI",
+      "color": "#182B35",
+      "fontSize": 11
+    }
+  },
+  "visualStyles": {
+    "*": {
+      "*": {
+        "background": [
+          {
+            "show": true,
+            "color": {
+              "solid": {
+                "color": "#FFFFFF"
+              }
+            },
+            "transparency": 0
+          }
+        ],
+        "border": [
+          {
+            "show": true,
+            "color": {
+              "solid": {
+                "color": "#E0E6DE"
+              }
+            },
+            "radius": 6
+          }
+        ],
+        "title": [
+          {
+            "show": true,
+            "fontColor": {
+              "solid": {
+                "color": "#182B35"
+              }
+            },
+            "fontSize": 12
+          }
+        ],
+        "visualHeader": [
+          {
+            "show": false
+          }
+        ],
+        "categoryAxis": [
+          {
+            "labelColor": {
+              "solid": {
+                "color": "#667681"
+              }
+            },
+            "fontSize": 9,
+            "showAxisTitle": false,
+            "gridlineShow": false
+          }
+        ],
+        "valueAxis": [
+          {
+            "labelColor": {
+              "solid": {
+                "color": "#667681"
+              }
+            },
+            "fontSize": 9,
+            "showAxisTitle": false,
+            "gridlineShow": false
+          }
+        ]
+      }
+    }
+  }
+}

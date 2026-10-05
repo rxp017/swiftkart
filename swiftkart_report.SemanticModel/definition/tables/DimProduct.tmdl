@@ -1,0 +1,67 @@
+table DimProduct
+	lineageTag: d3e0573e-b914-4b66-8c51-b8d7fe4ae283
+
+	column ProductID
+		dataType: string
+		lineageTag: 0ae7227a-1767-49d4-8618-b4d453e0b126
+		summarizeBy: none
+		sourceColumn: ProductID
+
+	column ProductName
+		dataType: string
+		lineageTag: 328b8de4-c215-4201-b727-630780ec481f
+		summarizeBy: none
+		sourceColumn: ProductName
+
+	column Category
+		dataType: string
+		lineageTag: 4dea043c-0b62-4cb8-8dad-68c3332d6c6a
+		summarizeBy: none
+		sourceColumn: Category
+
+	column SubCategory
+		dataType: string
+		lineageTag: 5e5c3e45-4f80-4b54-888e-4e949a1c6c97
+		summarizeBy: none
+		sourceColumn: SubCategory
+
+	column Brand
+		dataType: string
+		lineageTag: 39b5a55c-781e-4dd5-b6e0-00672fc11e89
+		summarizeBy: none
+		sourceColumn: Brand
+
+	column MRP
+		dataType: int64
+		lineageTag: eeddeaf8-55d0-407e-be43-9f9fa106b618
+		summarizeBy: none
+		sourceColumn: MRP
+
+	column CostPrice
+		dataType: double
+		lineageTag: e80ee312-493c-4687-9307-06b24bbcaf2a
+		summarizeBy: none
+		sourceColumn: CostPrice
+
+	column CategoryShort
+		dataType: string
+		lineageTag: 6fac7ed2-5263-4e29-8a2c-1b783e409415
+		summarizeBy: none
+		sourceColumn: CategoryShort
+
+	column CategoryColor
+		dataType: string
+		lineageTag: 56d464b1-f72a-43aa-b4c6-c74461596558
+		summarizeBy: none
+		sourceColumn: CategoryColor
+
+	partition DimProduct = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:/Swiftkart/data/DimProduct.csv"),[Delimiter=",", Columns=9, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    Typed = Table.TransformColumnTypes(Headers, {{"ProductID", type text}, {"ProductName", type text}, {"Category", type text}, {"SubCategory", type text}, {"Brand", type text}, {"MRP", Int64.Type}, {"CostPrice", type number}, {"CategoryShort", type text}, {"CategoryColor", type text}}, "en-US")
+				in
+				    Typed
+

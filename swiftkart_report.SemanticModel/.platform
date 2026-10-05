@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "swiftkart_report"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "a100e1d2-4e55-4ad0-9255-aea5019bc48e"
+  }
+}

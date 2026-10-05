@@ -1,0 +1,37 @@
+table Metric
+	lineageTag: d3df6160-f27f-42ca-9c4d-cf9dc1314c6e
+
+	column Choice
+		dataType: string
+		lineageTag: 2b4fc4d8-369c-479b-a95d-51752858e646
+		summarizeBy: none
+		sourceColumn: Choice
+		sortByColumn: Order
+
+		relatedColumnDetails
+			groupByColumn: Fields
+
+	column Order
+		dataType: int64
+		lineageTag: 4256a701-33dc-4952-a61d-f7e48daa3000
+		summarizeBy: none
+		sourceColumn: Order
+
+	column Fields
+		dataType: string
+		isHidden
+		lineageTag: 9ef10433-ef9d-411c-8220-0bff47f10399
+		summarizeBy: none
+		sourceColumn: Fields
+		sortByColumn: Order
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+	partition Metric = m
+		mode: import
+		source = #table(type table [Choice=text,Order=Int64.Type,Fields=text], {{"Sales",0,"'_Measures'[Sales]"},{"Profit",1,"'_Measures'[Profit]"},{"Orders",2,"'_Measures'[Orders]"}})
+

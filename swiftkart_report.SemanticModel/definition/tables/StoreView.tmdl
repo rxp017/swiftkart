@@ -1,0 +1,13 @@
+table StoreView
+	lineageTag: 0ebc7f0e-772b-4e21-9f8f-795c951875d4
+
+	column Choice
+		dataType: string
+		lineageTag: ad7d87fd-d8ec-44b6-a988-a159148d3b01
+		summarizeBy: none
+		sourceColumn: Choice
+
+	partition StoreView = m
+		mode: import
+		source = #table(type table [Choice=text], {{"Top 10"},{"Bottom 10"}})
+
